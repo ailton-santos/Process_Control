@@ -1,0 +1,49 @@
+// Aquisição de dados
+
+// Cria um bloco de aquisição de dados
+MyDAQ = DAQmxCreateTask("Aquisição de dados");
+
+// Define as configurações do bloco de aquisição de dados
+DAQmxCfgSampClkTiming(MyDAQ, "", 1000, DAQmx_Val_RisingEdge, DAQmx_Val_FiniteSamps, 1);
+DAQmxSetChanDataFormat(MyDAQ, "Dev1/ai0", DAQmx_Val_Float64);
+DAQmxSetReadMode(MyDAQ, DAQmx_Val_SinglePoint);
+
+// Realiza a aquisição de dados
+DAQmxStartTask(MyDAQ);
+level = DAQmxReadAnalogF64(MyDAQ, 1, 1000, DAQmx_Val_GroupByScanNumber, NULL, &levelData, 1, NULL);
+DAQmxStopTask(MyDAQ);
+
+// Controle
+
+// Cria um objeto de controle PID
+myPID = PIDController.Create();
+
+// Define os parâmetros do controle PID
+myPID.SetKp(1.0);
+myPID.SetKi(0.01);
+myPID.SetKd(0.001);
+
+// Calcula o sinal de controle
+setpoint = 100;
+error = setpoint - level;
+output = myPID.CalcOutput(error);
+
+// Temperatura
+
+// Cria um bloco de aquisição de dados
+MyDAQ2 = DAQmxCreateTask("Aquisição de temperatura");
+
+// Define as configurações do bloco de aquisição de dados
+DAQmxCfgSampClkTiming(MyDAQ2, "", 1000, DAQmx_Val_RisingEdge, DAQmx_Val_FiniteSamps, 1);
+DAQmxSetChanDataFormat(MyDAQ2, "Dev1/ai1", DAQmx_Val_Float64);
+DAQmxSetReadMode(MyDAQ2, DAQmx_Val_SinglePoint);
+
+// Realiza a aquisição de dados
+DAQmxStartTask(MyDAQ2);
+temperature = DAQmxReadAnalogF64(MyDAQ2, 1, 1000, DAQmx_Val_GroupByScanNumber, NULL, &temperatureData, 1, NULL);
+DAQmxStopTask(MyDAQ2);
+
+// Controle
+
+// Atualiza o valor do setpoint
+setpoint = 100 + 0.1 * temperature;

@@ -1,7 +1,7 @@
 # LabVIEW-Process-Control: Industrial Tank Level PID
 > **Closed-Loop Automation System for Real-Time Fluid Dynamics Management**
 
-![LabVIEW](https://img.shields.io/badge/LabVIEW-2024-yellow?style=for-the-badge&logo=national-instruments&logoColor=black)
+![LabVIEW](https://img.shields.io/badge/LabVIEW-yellow?style=for-the-badge&logo=national-instruments&logoColor=black)
 ![NI-DAQ](https://img.shields.io/badge/NI-DAQmx-blue?style=for-the-badge)
 ![Control Theory](https://img.shields.io/badge/Control-PID-green?style=for-the-badge)
 
